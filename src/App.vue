@@ -1,10 +1,10 @@
 <template>
   <div class="app">
-    <h1>{{ newDate }}</h1>
+    <h1>{{ newdate }}</h1>
 
     <div>
       <p>
-        Day: {{ newDay() }}
+        Day: {{ newDay }}
         <span v-if="addedDay > 0">
           (+ {{ addedDay }} {{ addedDay === 1 ? "day" : "days" }})
         </span>
@@ -14,7 +14,7 @@
 
     <div>
       <p>
-        Month: {{ newMonth() }}
+        Month: {{ newMonth }}
         <span v-if="addedMonth > 0">
           (+ {{ addedMonth }} {{ addedMonth === 1 ? "month" : "months" }})
         </span>
@@ -24,7 +24,7 @@
 
     <div class="action-btn">
       <button
-        @click="formattedNewDay(handleAddedDaysAndMonths().toString())"
+        @click="handleAddedDaysAndMonths"
         class="change-btn"
         title="Click to set new date"
       >
@@ -35,56 +35,23 @@
   </div>
 </template>
 
-<script>
-import DateMixin from "./date";
+<script setup>
+import setMyDate from "./date";
 
-export default {
-  mixins: [DateMixin],
-  data() {
-    return {
-      date: new Date(),
-      addedDay: 0,
-      addedMonth: 0,
-      newDate: "",
-    };
-  },
-  methods: {
-    handleAddedDay() {
-      // Implement logic to add day
-      this.addDays(this.addedDay + 1);
-    },
-    newDay() {
-      return this.addDays(this.addedDay).getDate();
-    },
-    newMonth() {
-      return this.addMonths(this.addedMonth).getMonth() + 1;
-    },
-    handleAddedMonth() {
-      // Implement logic to add month
-      this.addMonths(this.addedMonth + 1);
-    },
-    handleAddedDaysAndMonths() {
-      this.newDate = this.addDays(
-        this.addMonths(this.date, this.addedMonth),
-        this.addedDay
-      ).toString();
-    },
-    handleReset() {
-      this.date = new Date();
-      this.addedDay = 0;
-      this.addedMonth = 0;
-      this.newDate = "";
-    },
-  },
-  computed: {
-    formattedNewMonth() {
-      return this.currentMonth(this.date) + this.addedMonth;
-    },
-    formattedNewDay() {
-      return this.currentDay(this.date) + this.addedDay;
-    },
-  },
-};
+const {
+  date,
+  addedDay,
+  addedMonth,
+  newdate,
+  addDay,
+  addMonth,
+  handleAddedDay,
+  handleAddedMonth,
+  handleAddedDaysAndMonths,
+  newMonth,
+  newDay,
+  handleReset,
+} = setMyDate();
 </script>
 
 <style scoped>
@@ -99,5 +66,12 @@ export default {
 }
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
+}
+
+.app > div {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    font-size: 1.6rem;
 }
 </style>
